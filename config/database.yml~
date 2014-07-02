@@ -1,0 +1,18 @@
+# Default setup is given for MySQL with ruby1.9. If you're running Redmine
+# with MySQL and ruby1.8, replace the adapter name with `mysql`.
+# Examples for PostgreSQL, SQLite3 and SQL Server can be found at the end.
+# Line indentation must be 2 spaces (no tabs).
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+
+
+# PostgreSQL configuration example
+production:
+  adapter: postgresql
+  database: redmine
+  host: localhost
+  username: postgres
+  password: "sukhoimclaren.f1"
+
+
