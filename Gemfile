@@ -56,7 +56,7 @@ if File.exist?(database_file)
     adapters.each do |adapter|
       case adapter
       when /postgresql/
-        gem "pg", ">= 0.11.0", :platforms => [:mri, :mingw]
+        gem "pg", ">= 0.17.1", :platforms => [:mri, :mingw]
         gem "activerecord-jdbcpostgresql-adapter", :platforms => :jruby
       when /sqlite3/
         gem "sqlite3", :platforms => [:mri, :mingw]
