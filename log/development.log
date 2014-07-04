@@ -1,0 +1,178 @@
+Connecting to database specified by database.yml
+Creating scope :sorted. Overwriting existing method User.sorted.
+  [1m[36m (30.3ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.8ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.8ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.7ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.7ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.7ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.7ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.7ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.8ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.8ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.9ms)[0m  [1mSELECT version FROM schema_migrations[0m
+Migrating to RedcaseSetup (1)
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (284.9ms)[0m  CREATE TABLE "test_suites" ("id" serial primary key, "name" character varying(128) NOT NULL, "parent_id" integer) 
+  [1m[36m (58.0ms)[0m  [1mCREATE UNIQUE INDEX "index_test_suites_on_name_and_parent_id" ON "test_suites" ("name", "parent_id")[0m
+  [1m[35m (1.6ms)[0m  CREATE TABLE "test_suite_project" ("test_suite_id" integer NOT NULL, "project_id" integer NOT NULL) 
+  [1m[36m (30.1ms)[0m  [1mCREATE UNIQUE INDEX "index_test_suite_project_on_project_id" ON "test_suite_project" ("project_id")[0m
+  [1m[35m (24.5ms)[0m  CREATE UNIQUE INDEX "test_suite_project_index" ON "test_suite_project" ("test_suite_id", "project_id")
+  [1m[36m (36.3ms)[0m  [1mCREATE TABLE "execution_suites" ("id" serial primary key, "name" character varying(128) NOT NULL, "parent_id" integer) [0m
+  [1m[35m (34.8ms)[0m  CREATE UNIQUE INDEX "index_execution_suites_on_name_and_parent_id" ON "execution_suites" ("name", "parent_id")
+  [1m[36m (1.4ms)[0m  [1mCREATE TABLE "execution_suite_project" ("execution_suite_id" integer NOT NULL, "project_id" integer NOT NULL) [0m
+  [1m[35m (23.6ms)[0m  CREATE UNIQUE INDEX "index_execution_suite_project_on_project_id" ON "execution_suite_project" ("project_id")
+  [1m[36m (36.0ms)[0m  [1mCREATE UNIQUE INDEX "execution_suite_project_index" ON "execution_suite_project" ("execution_suite_id", "project_id")[0m
+  [1m[35m (38.0ms)[0m  CREATE TABLE "test_cases" ("id" serial primary key, "test_suite_id" integer NOT NULL, "issue_id" integer NOT NULL) 
+  [1m[36m (28.2ms)[0m  [1mCREATE UNIQUE INDEX "test_suite_test_case_index" ON "test_cases" ("test_suite_id", "issue_id")[0m
+  [1m[35m (1.6ms)[0m  CREATE TABLE "execution_suite_test_case" ("execution_suite_id" integer NOT NULL, "test_case_id" integer NOT NULL) 
+  [1m[36m (56.0ms)[0m  [1mCREATE UNIQUE INDEX "execution_suite_test_case_index" ON "execution_suite_test_case" ("execution_suite_id", "test_case_id")[0m
+  [1m[35m (0.8ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('1-redcase')
+  [1m[36m (19.8ms)[0m  [1mCOMMIT[0m
+Migrating to RedcaseExecRes (2)
+  [1m[35m (1.4ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (37.5ms)[0m  CREATE TABLE "execution_results" ("id" serial primary key, "name" character varying(255) NOT NULL) 
+  [1m[36m (27.4ms)[0m  [1mCREATE UNIQUE INDEX "index_execution_results_on_name" ON "execution_results" ("name")[0m
+  [1m[35mSQL (1.5ms)[0m  INSERT INTO "execution_results" ("name") VALUES ($1) RETURNING "id"  [["name", "Passed"]]
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "execution_results" ("name") VALUES ($1) RETURNING "id"[0m  [["name", "Failed"]]
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "execution_results" ("name") VALUES ($1) RETURNING "id"  [["name", "Blocked"]]
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "execution_results" ("name") VALUES ($1) RETURNING "id"[0m  [["name", "Not Run"]]
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "execution_results" ("name") VALUES ($1) RETURNING "id"  [["name", "Not Available"]]
+  [1m[36m (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('2-redcase')[0m
+  [1m[35m (18.5ms)[0m  COMMIT
+Migrating to RedcaseExecJournal (3)
+  [1m[36m (0.8ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (39.5ms)[0m  [1mCREATE TABLE "execution_journals" ("id" serial primary key, "test_case_id" integer NOT NULL, "result_id" integer NOT NULL, "version_id" integer, "comment" character varying(255), "created_on" timestamp NOT NULL) [0m
+  [1m[35m (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('3-redcase')
+  [1m[36m (21.6ms)[0m  [1mCOMMIT[0m
+Migrating to RedcasePatchJournal (4)
+  [1m[35m (0.9ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "execution_journals" ADD COLUMN "executor_id" integer NOT NULL
+  [1m[36m (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('4-redcase')[0m
+  [1m[35m (9.3ms)[0m  COMMIT
+Migrating to RedcaseEnvironment (5)
+  [1m[36m (0.7ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (39.4ms)[0m  [1mCREATE TABLE "execution_environments" ("id" serial primary key, "name" character varying(128) NOT NULL, "description" character varying(255), "project_id" integer) [0m
+  [1m[35m (0.7ms)[0m  ALTER TABLE "execution_journals" ADD COLUMN "environment_id" integer
+  [1m[36m (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('5-redcase')[0m
+  [1m[35m (22.5ms)[0m  COMMIT
+Migrating to RedcaseResultOrder (6)
+  [1m[36m (0.8ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "execution_results" ADD COLUMN "order" integer[0m
+  [1m[35mExecutionResult Load (1.1ms)[0m  SELECT "execution_results".* FROM "execution_results" WHERE "execution_results"."name" = 'Not Run' LIMIT 1
+  [1m[36mSQL (48.7ms)[0m  [1mDELETE FROM "execution_results" WHERE "execution_results"."id" = $1[0m  [["id", 4]]
+  [1m[35mExecutionResult Load (0.6ms)[0m  SELECT "execution_results".* FROM "execution_results" WHERE "execution_results"."name" = 'Passed' LIMIT 1
+  [1m[36mExecutionResult Load (0.6ms)[0m  [1mSELECT "execution_results".* FROM "execution_results" WHERE "execution_results"."name" = 'Failed' LIMIT 1[0m
+  [1m[35mExecutionResult Load (0.5ms)[0m  SELECT "execution_results".* FROM "execution_results" WHERE "execution_results"."name" = 'Blocked' LIMIT 1
+  [1m[36mExecutionResult Load (0.5ms)[0m  [1mSELECT "execution_results".* FROM "execution_results" WHERE "execution_results"."name" = 'Not Available' LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('6-redcase')
+  [1m[36m (26.9ms)[0m  [1mCOMMIT[0m
+Migrating to RedcaseExecList (7)
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (27.1ms)[0m  DROP INDEX "index_execution_suite_project_on_project_id"
+  [1m[36m (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('7-redcase')[0m
+  [1m[35m (11.9ms)[0m  COMMIT
+Migrating to RedcaseEnvironmentUp (8)
+  [1m[36m (1.2ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "execution_environments" ALTER COLUMN "project_id" TYPE integer[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "execution_environments" ALTER "project_id" SET NOT NULL
+  [1m[36m (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('8-redcase')[0m
+  [1m[35m (6.3ms)[0m  COMMIT
+Migrating to RedcaseExecComment (9)
+  [1m[36m (0.7ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (43.5ms)[0m  [1mALTER TABLE "execution_journals" ALTER COLUMN "comment" TYPE text[0m
+  [1m[35m (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('9-redcase')
+  [1m[36m (17.2ms)[0m  [1mCOMMIT[0m
+Migrating to RedcaseProjectTs (10)
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "test_suites" ADD COLUMN "project_id" integer
+  [1m[36m (12.7ms)[0m  [1mDROP TABLE "test_suite_project"[0m
+  [1m[35m (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('10-redcase')
+  [1m[36m (16.7ms)[0m  [1mCOMMIT[0m
+Migrating to RedcaseProjectEs (11)
+  [1m[35m (1.2ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.9ms)[0m  ALTER TABLE "execution_suites" ADD COLUMN "project_id" integer
+  [1m[36m (1.2ms)[0m  [1mDROP TABLE "execution_suite_project"[0m
+  [1m[35m (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('11-redcase')
+  [1m[36m (5.0ms)[0m  [1mCOMMIT[0m
+Migrating to RedcasePatchJournal2 (12)
+  [1m[35m (0.8ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.9ms)[0m  ALTER TABLE "execution_journals" ALTER COLUMN "executor_id" TYPE integer
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "execution_journals" ALTER "executor_id" DROP NOT NULL[0m
+  [1m[35m (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('12-redcase')
+  [1m[36m (4.3ms)[0m  [1mCOMMIT[0m
+Migrating to RedcaseDefaultTracker (13)
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mTracker Load (1.0ms)[0m  SELECT "trackers".* FROM "trackers" WHERE "trackers"."name" = 'Test case' LIMIT 1
+  [1m[36mTracker Exists (0.6ms)[0m  [1mSELECT 1 AS one FROM "trackers" WHERE "trackers"."name" = 'Test case' LIMIT 1[0m
+  [1m[35mTracker Load (0.8ms)[0m  SELECT "trackers".* FROM "trackers" WHERE (1 = 1) ORDER BY position DESC LIMIT 1
+  [1m[36mSQL (1.3ms)[0m  [1mINSERT INTO "trackers" ("fields_bits", "is_in_chlog", "is_in_roadmap", "name", "position") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["fields_bits", 0], ["is_in_chlog", false], ["is_in_roadmap", true], ["name", "Test case"], ["position", 4]]
+  [1m[35mIssueStatus Load (0.9ms)[0m  SELECT "issue_statuses".* FROM "issue_statuses" WHERE "issue_statuses"."name" = 'New' LIMIT 1
+  [1m[36mIssueStatus Load (0.6ms)[0m  [1mSELECT "issue_statuses".* FROM "issue_statuses" WHERE "issue_statuses"."name" = 'In Progress' LIMIT 1[0m
+  [1m[35mIssueStatus Load (0.6ms)[0m  SELECT "issue_statuses".* FROM "issue_statuses" WHERE "issue_statuses"."name" = 'Obsoleted' LIMIT 1
+  [1m[36mIssueStatus Exists (0.6ms)[0m  [1mSELECT 1 AS one FROM "issue_statuses" WHERE "issue_statuses"."name" = 'Obsoleted' LIMIT 1[0m
+  [1m[35mIssueStatus Load (8.4ms)[0m  SELECT "issue_statuses".* FROM "issue_statuses" WHERE (1 = 1) ORDER BY position DESC LIMIT 1
+  [1m[36mSQL (10.5ms)[0m  [1mINSERT INTO "issue_statuses" ("default_done_ratio", "is_closed", "is_default", "name", "position") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["default_done_ratio", nil], ["is_closed", false], ["is_default", false], ["name", "Obsoleted"], ["position", 7]]
+  [1m[35mRole Load (0.8ms)[0m  SELECT "roles".* FROM "roles" 
+  [1m[36mSQL (93.1ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 2], ["old_status_id", 1], ["role_id", 4], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 2], ["role_id", 4], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 7], ["old_status_id", 2], ["role_id", 4], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 7], ["role_id", 4], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 2], ["old_status_id", 1], ["role_id", 5], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 2], ["role_id", 5], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 7], ["old_status_id", 2], ["role_id", 5], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 7], ["role_id", 5], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 2], ["old_status_id", 1], ["role_id", 1], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 2], ["role_id", 1], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 7], ["old_status_id", 2], ["role_id", 1], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 7], ["role_id", 1], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 2], ["old_status_id", 1], ["role_id", 2], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 2], ["role_id", 2], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 7], ["old_status_id", 2], ["role_id", 2], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 7], ["role_id", 2], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 2], ["old_status_id", 1], ["role_id", 3], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 2], ["role_id", 3], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 7], ["old_status_id", 2], ["role_id", 3], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "workflows" ("assignee", "author", "field_name", "new_status_id", "old_status_id", "role_id", "rule", "tracker_id", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["assignee", false], ["author", false], ["field_name", nil], ["new_status_id", 1], ["old_status_id", 7], ["role_id", 3], ["rule", nil], ["tracker_id", 4], ["type", "WorkflowTransition"]]
+  [1m[36m (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('13-redcase')[0m
+  [1m[35m (17.1ms)[0m  COMMIT
+Migrating to RedcaseTrackerObsoleteBug (14)
+  [1m[36m (0.8ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mIssueStatus Load (0.6ms)[0m  [1mSELECT "issue_statuses".* FROM "issue_statuses" WHERE "issue_statuses"."name" = 'Obsoleted' LIMIT 1[0m
+  [1m[35mIssueStatus Exists (0.7ms)[0m  SELECT 1 AS one FROM "issue_statuses" WHERE ("issue_statuses"."name" = 'Obsolete' AND "issue_statuses"."id" != 7) LIMIT 1
+  [1m[36m (0.7ms)[0m  [1mUPDATE "issue_statuses" SET "name" = 'Obsolete' WHERE "issue_statuses"."id" = 7[0m
+  [1m[35m (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('14-redcase')
+  [1m[36m (6.3ms)[0m  [1mCOMMIT[0m
+Migrating to RedcaseResultOrderBug (15)
+  [1m[35m (0.9ms)[0m  SELECT version FROM schema_migrations
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "execution_results" RENAME COLUMN "order" TO "order_num"
+  [1m[36m (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('15-redcase')[0m
+  [1m[35m (3.7ms)[0m  COMMIT
+Migrating to RedcaseResultOrderPatch (16)
+  [1m[36m (0.8ms)[0m  [1mSELECT version FROM schema_migrations[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "execution_results" RENAME COLUMN "order_num" TO "order_number"[0m
+  [1m[35m (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('16-redcase')
+  [1m[36m (7.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.7ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
